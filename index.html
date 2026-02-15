@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netherlands Tax Calculator — 2025 vs 2028</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h1>Netherlands Tax Calculator</h1>
+        <p class="subtitle">Compare your tax burden: <strong>2025</strong> (current) vs <strong>2028</strong> (reformed Box 3)</p>
+      </div>
+      <button id="shareBtn" class="share-btn" title="Copy shareable link">SHARE</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- INPUT SECTION -->
+    <section class="input-section">
+      <div class="cards">
+
+        <!-- Card 1: Box 1 -->
+        <div class="card">
+          <h2>Box 1 — Employment Income <span class="hint">(Inkomen uit werk en woning)</span></h2>
+
+          <label>
+            Annual gross salary (EUR)
+            <input type="number" id="salary" value="60000" min="0" step="100">
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="thirtyPercentRuling">
+            30% ruling <span class="tooltip" data-tip="Reduces taxable salary by 30% for qualifying expat employees">[?]</span>
+          </label>
+
+          <label>
+            Mortgage interest deduction (EUR) <span class="tooltip" data-tip="Hypotheekrenteaftrek — deductible mortgage interest on primary residence">[?]</span>
+            <input type="number" id="mortgageInterest" value="0" min="0" step="100">
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="fiscalPartner">
+            Fiscal partner <span class="tooltip" data-tip="Doubles the Box 3 tax-free threshold">[?]</span>
+          </label>
+        </div>
+
+        <!-- Card 2: Box 2 -->
+        <div class="card">
+          <h2>Box 2 — Substantial Interest <span class="hint">(Aanmerkelijk belang)</span></h2>
+
+          <label>
+            Dividend / capital gains from BV (EUR) <span class="tooltip" data-tip="Income from a company in which you hold ≥5% of shares">[?]</span>
+            <input type="number" id="box2Income" value="0" min="0" step="100">
+          </label>
+        </div>
+
+        <!-- Card 3: Box 3 -->
+        <div class="card">
+          <h2>Box 3 — Savings & Investments <span class="hint">(Sparen en beleggen)</span></h2>
+
+          <label>
+            Bank savings (EUR)
+            <input type="number" id="savings" value="0" min="0" step="1000">
+          </label>
+
+          <label>
+            Stocks (EUR)
+            <input type="number" id="stocks" value="0" min="0" step="1000">
+          </label>
+
+          <label>
+            Cryptocurrency (EUR)
+            <input type="number" id="crypto" value="0" min="0" step="1000">
+          </label>
+
+          <label>
+            Bonds (EUR)
+            <input type="number" id="bonds" value="0" min="0" step="1000">
+          </label>
+
+          <label>
+            Investment real estate (EUR)
+            <input type="number" id="realEstate" value="0" min="0" step="1000">
+          </label>
+
+          <label>
+            Rental income from real estate (EUR/year)
+            <input type="number" id="rentalIncome" value="0" min="0" step="100">
+          </label>
+
+          <label>
+            Debts (EUR) <span class="tooltip" data-tip="Schulden — debts reduce your Box 3 net assets">[?]</span>
+            <input type="number" id="debts" value="0" min="0" step="1000">
+          </label>
+        </div>
+      </div>
+
+      <!-- Collapsible 2028 Assumptions -->
+      <details class="assumptions">
+        <summary>2028 Scenario — Expected Return Rates</summary>
+        <div class="assumptions-grid">
+          <label>
+            Savings interest (%)
+            <input type="number" id="returnSavings" value="2" min="0" max="100" step="0.1">
+          </label>
+          <label>
+            Stocks return (%)
+            <input type="number" id="returnStocks" value="8" min="-100" max="200" step="0.1">
+          </label>
+          <label>
+            Crypto return (%)
+            <input type="number" id="returnCrypto" value="10" min="-100" max="500" step="0.1">
+          </label>
+          <label>
+            Bonds return (%)
+            <input type="number" id="returnBonds" value="3" min="-100" max="100" step="0.1">
+          </label>
+          <label>
+            Real estate appreciation (%)
+            <input type="number" id="returnRealEstate" value="5" min="-100" max="100" step="0.1">
+          </label>
+        </div>
+      </details>
+    </section>
+
+    <!-- RESULTS SECTION -->
+    <section class="results-section" id="results">
+
+      <!-- Difference banner -->
+      <div class="difference-banner" id="differenceBanner"></div>
+
+      <!-- Side-by-side comparison -->
+      <div class="comparison-grid">
+        <div class="column" id="results2025">
+          <h3>2025 — Current System</h3>
+          <div class="result-body"></div>
+        </div>
+        <div class="column" id="results2028">
+          <h3>2028 — Reformed System</h3>
+          <div class="result-body"></div>
+        </div>
+      </div>
+
+      <!-- Bar chart -->
+      <div class="chart-section">
+        <h3>Tax per Box — Visual Comparison</h3>
+        <div class="chart" id="barChart"></div>
+      </div>
+
+      <!-- Projection chart -->
+      <div class="chart-section" id="projectionSection" style="display:none">
+        <h3>Long-Term Impact on Investment Portfolio</h3>
+        <div class="projection-controls">
+          <label>
+            Projection horizon:
+            <input type="range" id="projectionYears" min="5" max="30" value="20">
+            <span id="projectionYearsLabel">20 years</span>
+          </label>
+        </div>
+        <div class="canvas-container">
+          <canvas id="projectionCanvas"></canvas>
+          <div class="projection-tooltip" id="projectionTooltip"></div>
+        </div>
+        <div class="projection-summary" id="projectionSummary"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="disclaimer">
+      This calculator provides estimates based on publicly available tax rules. 2028 Box 1 rates use 2025 projections. The 2028 Box 3 system is based on legislation passed by the House of Representatives (Feb 2026), pending Senate approval. This is not tax advice — consult a tax advisor for your specific situation.
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
