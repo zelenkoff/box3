@@ -130,6 +130,18 @@ header h1 {
   word-wrap: break-word;
 }
 
+.creator-link {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.creator-link:hover {
+  color: var(--text);
+  border-bottom-color: var(--text);
+}
+
 main {
   display: grid;
   grid-template-columns: 320px 1fr;
